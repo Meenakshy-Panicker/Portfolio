@@ -73,7 +73,6 @@
   --y: 40%;
 
   /* Z-index scale */
-  --z-ambient: -1;
   --z-base: 1;
   --z-nav: 50;
   --z-cursor: 40;
