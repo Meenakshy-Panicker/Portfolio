@@ -1,0 +1,819 @@
+/* ==========================================================================
+   Sections — hero, about, work, experience, awards, creative, contact, footer
+   ========================================================================== */
+
+/* ---------------------------------- Hero ---------------------------------- */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-6);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(55% 45% at 30% 0%, rgba(168, 85, 247, 0.08), transparent 70%),
+    radial-gradient(50% 40% at 80% 15%, rgba(236, 72, 153, 0.06), transparent 70%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
+  background-size: 160% 160%, 160% 160%, 100% 100%;
+  animation: hero-gradient-drift 22s ease-in-out infinite alternate;
+  z-index: -2;
+}
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes hero-gradient-drift {
+  from {
+    background-position: 0% 0%, 100% 0%, 0 0;
+  }
+  to {
+    background-position: 12% 8%, 88% 10%, 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before {
+    animation: none;
+  }
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: var(--space-6);
+  align-items: center;
+  width: 100%;
+}
+
+.hero-eyebrow {
+  margin-bottom: var(--space-3);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  background: var(--accent-soft);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  margin-bottom: var(--space-3);
+}
+
+.hero-badge--link {
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.hero-badge--link:hover,
+.hero-badge--link:focus-visible {
+  color: var(--text-primary);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.hero-name {
+  font-size: var(--fs-hero);
+  color: var(--text-primary);
+}
+
+.hero-name em {
+  font-style: italic;
+  background: var(--accent-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--accent);
+}
+
+.hero-headline {
+  margin-top: var(--space-3);
+  font-size: var(--fs-lead);
+  color: var(--text-secondary);
+  max-width: 46ch;
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-5);
+}
+
+.hero-portrait {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.hero-portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.8);
+}
+
+.hero-scroll-cue {
+  position: absolute;
+  bottom: var(--space-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-tertiary);
+}
+
+.hero-scroll-cue span {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero-scroll-cue .line {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(180deg, var(--text-tertiary), transparent);
+}
+
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-portrait {
+    max-width: 280px;
+    order: -1;
+  }
+}
+
+/* ---------------------------------- About ---------------------------------- */
+
+.about-lead {
+  /* This is a <h2> for correct heading hierarchy (pillars below are <h3>),
+     but should still read as body copy like every other .lead usage on the
+     site — override the h1/h2/h3 display-font rule it would otherwise pick up. */
+  font-family: var(--font-body);
+  font-weight: 400;
+  letter-spacing: normal;
+  margin-top: var(--space-2);
+  max-width: 62ch;
+}
+
+/* A quiet aside, not a callout — no heading, no border, no background.
+   Just the mark and the words, with room to breathe on either side. */
+.logo-quote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 56ch;
+  margin: var(--space-6) auto;
+  text-align: center;
+}
+
+.logo-quote-mark {
+  width: 40px;
+  height: auto;
+  opacity: 0.92;
+}
+
+.logo-quote-text {
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+.logo-quote-text p {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.logo-quote-text p + p {
+  margin-top: 1rem;
+}
+
+.logo-quote-text strong {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+}
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.pillar-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+}
+
+.pillar-index {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+}
+
+.pillar-title {
+  font-size: var(--fs-h3);
+  color: var(--text-primary);
+  margin-top: var(--space-2);
+}
+
+.pillar-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 0.35rem;
+  margin-bottom: var(--space-2);
+}
+
+.pillar-text {
+  flex: 1;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.pillar-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 900px) {
+  .pillars {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+}
+
+/* ---------------------------------- Projects / Case studies ---------------------------------- */
+
+.work-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-4);
+  align-items: stretch;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  height: 100%;
+}
+
+.project-card .media {
+  aspect-ratio: 16 / 10;
+  border-radius: 0;
+}
+
+.project-chip {
+  position: absolute;
+  z-index: 1;
+  top: var(--space-2);
+  left: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  backdrop-filter: blur(6px);
+}
+
+.project-card:hover .media img {
+  transform: scale(1.045);
+}
+
+.project-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.project-card-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.project-index {
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.project-title {
+  font-size: var(--fs-h3);
+  color: var(--text-primary);
+}
+
+.project-summary {
+  color: var(--text-secondary);
+  font-size: var(--fs-small);
+}
+
+.project-impact {
+  color: var(--text-secondary);
+  font-size: var(--fs-small);
+}
+
+.project-impact strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: var(--space-1);
+}
+
+.project-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.project-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border);
+}
+
+.project-link--secondary {
+  color: var(--text-secondary);
+}
+
+.project-link--secondary:hover {
+  color: var(--text-primary);
+}
+
+.project-link svg {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.project-card:hover .project-link svg {
+  transform: translate(3px, -3px);
+}
+
+@media (max-width: 480px) {
+  .project-card-body {
+    padding: var(--space-3);
+  }
+}
+
+/* ---------------------------------- Awards ---------------------------------- */
+
+.awards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.award-card {
+  overflow: hidden;
+  padding: 0;
+}
+
+.award-card .media {
+  aspect-ratio: 16 / 10;
+  border-radius: 0;
+}
+
+.award-body {
+  padding: var(--space-3) var(--space-3) var(--space-4);
+}
+
+.award-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  margin-top: var(--space-1);
+}
+
+.award-meta {
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+/* Featured award — spans full grid width, side-by-side layout */
+.award-card--featured {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.award-card--featured .media {
+  aspect-ratio: 4 / 3;
+  border-radius: 0;
+}
+
+/* Featured award image cycles through 4 photos automatically, crossfading
+   in place — each slide gets an equal share of the loop, offset by delay. */
+.award-media-slideshow {
+  position: relative;
+}
+
+.award-media-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: award-slideshow 16s infinite;
+}
+
+.award-media-slide:nth-child(1) { animation-delay: 0s; }
+.award-media-slide:nth-child(2) { animation-delay: 4s; }
+.award-media-slide:nth-child(3) { animation-delay: 8s; }
+.award-media-slide:nth-child(4) { animation-delay: 12s; }
+
+.award-media-slideshow:hover .award-media-slide {
+  animation-play-state: paused;
+}
+
+@keyframes award-slideshow {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  3% {
+    opacity: 1;
+  }
+  22% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .award-media-slide {
+    animation: none;
+    opacity: 0;
+  }
+
+  .award-media-slide:first-child {
+    opacity: 1;
+  }
+}
+
+/* Secondary awards subsection */
+.awards-sub {
+  margin-top: var(--space-5);
+}
+
+.awards-sub-eyebrow {
+  margin-bottom: var(--space-3);
+}
+
+.awards-sub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.award-secondary {
+  padding: var(--space-4);
+}
+
+.award-secondary-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--text-primary);
+}
+
+.award-secondary-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-top: var(--space-1);
+  line-height: 1.55;
+}
+
+.award-secondary-meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 760px) {
+  .awards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .award-card--featured {
+    grid-template-columns: 1fr;
+  }
+
+  .awards-sub-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------- Creative practice ---------------------------------- */
+
+.creative-section {
+  overflow: hidden;
+}
+
+/* Full-bleed — deliberately outside .wrap so the row can scroll edge to
+   edge, matching the "cinematic strip" feel a marquee wants. Only the
+   section heading above stays inside .wrap. */
+.creative-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-block: var(--space-2);
+  /* Soft fade at both edges instead of a hard clip. */
+  mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+}
+
+.creative-track {
+  display: flex;
+  gap: var(--space-3);
+  width: max-content;
+  padding-inline: var(--container-pad);
+  animation: creative-marquee 55s linear infinite;
+}
+
+/* Hovering anywhere on the row pauses the whole track, not just the tile
+   under the cursor — animation-play-state, not a JS frame loop, so the
+   compositor handles it and the pause/resume itself stays smooth.
+   Deliberately :hover only, not :focus-within — the lightbox returns
+   keyboard focus to the tile you opened it from when it closes (correct
+   a11y practice), which would otherwise leave the marquee permanently
+   paused until focus moved elsewhere. */
+.creative-marquee:hover .creative-track {
+  animation-play-state: paused;
+}
+
+@keyframes creative-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Track holds 3 identical copies of the row (see creative-marquee.js);
+       moving exactly one copy's width loops seamlessly since the next
+       copy is pixel-identical to the one scrolling off. */
+    transform: translateX(-33.3333%);
+  }
+}
+
+.creative-item {
+  position: relative;
+  flex: 0 0 auto;
+  height: 320px;
+  width: auto;
+  /* A broken/not-yet-loaded <img> has no intrinsic size, so width:auto
+     alone collapses the tile to 0 — min-width keeps it (and its
+     placeholder.js fallback box) a sane size either way; real photos
+     comfortably exceed this at 320px tall, so it never fights their
+     natural aspect ratio. */
+  min-width: 240px;
+  max-width: 440px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.creative-item img {
+  height: 100%;
+  width: auto;
+  min-width: 100%;
+  max-width: 440px;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.creative-item:hover img {
+  transform: scale(1.05);
+}
+
+.creative-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.35) 100%);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.creative-item:hover::after {
+  opacity: 1;
+}
+
+.creative-item span {
+  position: absolute;
+  bottom: var(--space-1);
+  left: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.creative-item:hover span {
+  opacity: 1;
+}
+
+/* Reduced motion: no animation, no clones (creative-marquee.js skips
+   building them) — just a normal, calm horizontally-scrollable strip.
+   Swipe/trackpad works via native overflow-x; pointer drag is wired up
+   in JS since browsers don't do that natively for a mouse. */
+.creative-marquee.is-static {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  cursor: grab;
+}
+
+.creative-marquee.is-static .creative-track {
+  animation: none;
+  transform: none;
+}
+
+.creative-marquee.is-static .creative-item {
+  scroll-snap-align: start;
+}
+
+.creative-marquee.is-static.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
+@media (max-width: 900px) {
+  .creative-item {
+    height: 240px;
+    min-width: 190px;
+    max-width: 340px;
+  }
+
+  .creative-item img {
+    max-width: 340px;
+  }
+}
+
+@media (max-width: 560px) {
+  .creative-item {
+    height: 190px;
+    min-width: 150px;
+    max-width: 260px;
+  }
+
+  .creative-item img {
+    max-width: 260px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .creative-track {
+    animation: none;
+  }
+}
+
+/* ---------------------------------- Contact ---------------------------------- */
+
+.contact-inner {
+  max-width: 640px;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+.contact-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 1.05rem;
+}
+
+.contact-links a:hover {
+  color: var(--accent);
+}
+
+.contact-links svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.5;
+}
+
+/* ---------------------------------- Footer ---------------------------------- */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding-block: var(--space-4);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.footer-copy {
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+}
+
+.footer-social {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.footer-social a {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.footer-social a:hover {
+  color: var(--accent);
+}

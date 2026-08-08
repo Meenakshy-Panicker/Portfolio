@@ -1,0 +1,698 @@
+/* ==========================================================================
+   Components — nav, buttons, cards, modal, lightbox, timeline, form, cursor
+   ========================================================================== */
+
+/* ---------------------------------- Cursor glow ---------------------------------- */
+
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  background: radial-gradient(
+    600px circle at var(--x) var(--y),
+    rgba(168, 85, 247, 0.07),
+    rgba(236, 72, 153, 0.04) 45%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.cursor-glow.is-active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce), (pointer: coarse) {
+  .cursor-glow {
+    display: none;
+  }
+}
+
+/* ---------------------------------- Custom cursor (desktop only) ---------------------------------- */
+
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
+.cursor-dot,
+.cursor-trail,
+.cursor-label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: var(--z-toast);
+  will-change: transform, opacity;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out), width var(--dur-fast) var(--ease-out), height var(--dur-fast) var(--ease-out);
+}
+
+.cursor-dot.is-visible {
+  opacity: 1;
+}
+
+.cursor-dot.is-hidden-for-label {
+  opacity: 0;
+}
+
+/* Ring halo only — the soft trail itself is now drawn on .cursor-comet */
+.cursor-trail {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out), width var(--dur-base) var(--ease-out), height var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out);
+}
+
+.cursor-trail.is-ring {
+  width: 64px;
+  height: 64px;
+  opacity: 1;
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  box-shadow: 0 0 24px -4px rgba(236, 72, 153, 0.4);
+}
+
+/* Soft multi-point comet trail — canvas lets us fade many past positions
+   at once instead of a single lagging blob, which reads as a real trail. */
+.cursor-comet {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-toast);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.cursor-comet.is-visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-comet {
+    display: none;
+  }
+}
+
+.cursor-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  background: var(--accent-gradient);
+  color: #f2f0f5;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.85);
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.cursor-label.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ---------------------------------- Navigation ---------------------------------- */
+
+.site-nav {
+  position: fixed;
+  top: var(--space-2);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(calc(100% - 2.4rem), 920px);
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.7rem 0.6rem 0.7rem 1.3rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(10, 10, 12, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  transition: background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+
+.site-nav.is-scrolled {
+  background: rgba(10, 10, 12, 0.78);
+  border-color: var(--border-strong);
+  box-shadow: 0 16px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-logo-mark {
+  height: 30px;
+  width: auto;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  position: relative;
+  padding: 0.3rem 0.1rem;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.nav-links a:hover,
+.nav-links a.is-active {
+  color: var(--text-primary);
+}
+
+.nav-links a.is-active::after {
+  transform: scaleX(1);
+}
+
+.nav-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.nav-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 760px) {
+  .nav-links {
+    position: fixed;
+    inset: 4.6rem var(--space-2) auto var(--space-2);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-2);
+    transform: translateY(-12px) scale(0.98);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+
+  .nav-links.is-open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .nav-links li {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-links li:last-child {
+    border-bottom: none;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 0.85rem 0.4rem;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+}
+
+/* ---------------------------------- Buttons ---------------------------------- */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent-gradient);
+  color: #f2f0f5;
+  box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
+  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 32px -8px rgba(168, 85, 247, 0.55);
+}
+
+.btn-ghost {
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  background: transparent;
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-text {
+  color: var(--text-primary);
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+}
+
+.btn-text:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.magnetic {
+  will-change: transform;
+}
+
+/* ---------------------------------- Cards ---------------------------------- */
+
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+}
+
+/* ---------------------------------- Asset placeholder ---------------------------------- */
+
+.media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out);
+}
+
+.media-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-2);
+  background: linear-gradient(155deg, var(--bg-elevated) 0%, var(--bg-elevated-2) 100%);
+  border: 1px dashed var(--border-strong);
+}
+
+.media-placeholder span {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* ---------------------------------- Dialog / Modal ---------------------------------- */
+
+dialog.modal {
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: min(92vw, 980px);
+  max-height: 88vh;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+}
+
+dialog.modal::backdrop {
+  background: var(--bg-overlay);
+  backdrop-filter: blur(6px);
+}
+
+.modal-inner {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: var(--space-5);
+}
+
+.modal-close {
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  margin-bottom: var(--space-2);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+}
+
+.modal-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.modal-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.modal-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-2);
+  margin: var(--space-4) 0;
+}
+
+.modal-gallery .media {
+  aspect-ratio: 4 / 3;
+  cursor: zoom-in;
+}
+
+.modal-gallery .media:hover img {
+  transform: scale(1.04);
+}
+
+.modal-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin: var(--space-3) 0;
+}
+
+.modal-meta dt {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 0.35rem;
+}
+
+.modal-meta dd {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.modal-block + .modal-block {
+  margin-top: var(--space-3);
+}
+
+.modal-block h4 {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* ---------------------------------- Lightbox ---------------------------------- */
+
+dialog.lightbox {
+  border: none;
+  padding: 0;
+  background: transparent;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0;
+  inset: 0;
+}
+
+dialog.lightbox::backdrop {
+  background: rgba(6, 6, 7, 0.94);
+}
+
+.lightbox-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+/* Image and caption side by side, as one centered group — the caption
+   used to float over the bottom of the image, which crowded portrait
+   photos badly. A side panel keeps the two from ever overlapping. */
+.lightbox-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  max-width: 92vw;
+  max-height: 88vh;
+}
+
+.lightbox-inner img {
+  flex: 1 1 auto;
+  /* A broken/missing photo has no intrinsic size, so width:auto alone
+     would collapse it to 0 (same issue as the marquee tiles) — a floor
+     size keeps the layout looking intentional until real files land. */
+  min-width: 240px;
+  min-height: 240px;
+  max-width: min(68vw, 820px);
+  max-height: 82vh;
+  width: auto;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  display: block;
+}
+
+.lightbox-prev[hidden],
+.lightbox-next[hidden] {
+  display: none;
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lightbox-close {
+  top: var(--space-3);
+  right: var(--space-3);
+}
+
+.lightbox-prev {
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-next {
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-close svg,
+.lightbox-prev svg,
+.lightbox-next svg {
+  width: 18px;
+  height: 18px;
+}
+
+.lightbox-caption[hidden] {
+  display: none;
+}
+
+.lightbox-caption {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  width: min(280px, 26vw);
+  text-align: left;
+  border-left: 1px solid var(--border-strong);
+  padding-left: var(--space-3);
+}
+
+.lightbox-caption-category {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Not every photo has one — collapses cleanly when empty rather than
+   leaving an inconsistent gap for shots that only have a description. */
+.lightbox-caption-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.lightbox-caption-title:empty {
+  display: none;
+}
+
+.lightbox-caption-text {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Below ~900px there isn't room for image + a 280px side panel without
+   squeezing the photo too small — stack instead, caption under the image,
+   centered. Still normal flow (not an overlay), so nothing crowds. */
+@media (max-width: 900px) {
+  .lightbox-content {
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 92vw;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  .lightbox-inner img {
+    max-width: 88vw;
+    max-height: 60vh;
+  }
+
+  .lightbox-caption {
+    width: min(480px, 88vw);
+    align-items: center;
+    text-align: center;
+    border-left: none;
+    padding-left: 0;
+  }
+}
+
+/* ---------------------------------- Back to top ---------------------------------- */
+
+.back-to-top {
+  position: fixed;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  z-index: var(--z-nav);
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.back-to-top svg {
+  width: 16px;
+  height: 16px;
+}
