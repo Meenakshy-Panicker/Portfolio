@@ -92,7 +92,8 @@
   color: var(--text-primary);
 }
 
-.hero-name em {
+.hero-name em,
+h2.font-display em {
   font-style: italic;
   background: var(--accent-gradient);
   background-clip: text;
