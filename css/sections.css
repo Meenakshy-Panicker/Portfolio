@@ -166,6 +166,22 @@ h2.font-display em {
     max-width: 280px;
     order: -1;
   }
+
+  /* Stacked mobile content (portrait + eyebrow + badge + name + headline)
+     is usually taller than the viewport. With `align-items: center` on a
+     `min-height: 100vh` flex container, overflow spills equally in both
+     directions — including upward, underneath the fixed nav pill, which
+     is what was clipping/overlapping the badge and name. Anchoring to the
+     top and giving explicit clearance for the nav fixes that without
+     touching desktop, where content already fits and centers fine. */
+  .hero {
+    align-items: flex-start;
+    padding-top: 7rem;
+  }
+
+  .hero-badge {
+    padding: 0.6rem 1rem;
+  }
 }
 
 /* ---------------------------------- About ---------------------------------- */

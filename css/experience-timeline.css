@@ -548,7 +548,15 @@
   .exp-milestone-col,
   .exp-item[data-side="left"] .exp-milestone-col,
   .exp-item[data-side="right"] .exp-milestone-col {
-    width: 100%;
+    /* Was `width: 100%` plus `margin-left: 46px` — percentage widths are
+       resolved against the containing block and margin is added outside
+       that box, so the column was rendering 46px wider than its parent.
+       .exp-wrap's `overflow: hidden` then silently clipped the overflow
+       instead of showing a scrollbar, which is why org/role text (e.g.
+       "Ankur Pragati Foundation", "Research Intern") was cut off rather
+       than wrapping. Subtracting the offset keeps the box inside its
+       parent so text wraps normally instead of overflowing. */
+    width: calc(100% - 46px);
     margin-left: 46px;
     margin-right: 0;
   }
@@ -565,6 +573,13 @@
   .exp-item[data-side="right"] .exp-trigger {
     align-items: flex-start;
     text-align: left;
+    /* Desktop's alternating layout pushes "left"-side triggers to the far
+       edge of their column via `margin-left: auto`. On the single-column
+       mobile layout that shoved company/role text off to the right
+       instead of flush against the line like every other entry — reset
+       both so every trigger starts at the same left edge. */
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .exp-item {
