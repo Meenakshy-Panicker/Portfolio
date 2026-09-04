@@ -1,0 +1,78 @@
+/* ==========================================================================
+   Ambient background — a fixed, layered backdrop behind the whole page.
+
+   Layer 1  .site-bg__atmosphere  static   dark-purple atmospheric wash
+   Layer 2  .site-bg__network     static   very faint topographic / river network
+   Layer 3  .site-bg__particles   animated tiny particles drifting (canvas, ambient.js)
+   Layer 4  .site-bg__pulse       animated glowing points travelling the network (SVG)
+   Layer 5  .site-bg__network     scroll   1–3% parallax drift (ambient.js)
+
+   Everything here is deliberately low-contrast so it never competes with type.
+   ========================================================================== */
+
+.site-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg);
+}
+
+/* ---- Layer 1 — atmosphere -------------------------------------------------- */
+.site-bg__atmosphere {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 12% 8%, rgba(168, 85, 247, 0.10), transparent 70%),
+    radial-gradient(45% 45% at 88% 4%, rgba(194, 102, 240, 0.07), transparent 70%),
+    radial-gradient(70% 60% at 78% 92%, rgba(236, 72, 153, 0.05), transparent 72%),
+    radial-gradient(120% 90% at 50% 50%, #14101d 0%, #0d0b12 60%, #0a0810 100%);
+}
+
+/* ---- Layers 2 & 4 — network + travelling pulses -------------------------- */
+.site-bg__network {
+  position: absolute;
+  /* Oversized so the parallax translate (capped at ~72px in ambient.js)
+     never pulls a network edge into view. */
+  inset: -12%;
+  width: 124%;
+  height: 124%;
+  will-change: transform;
+}
+
+.site-bg__net-line {
+  fill: none;
+  stroke: rgba(180, 130, 245, 0.07);
+  stroke-width: 1;
+}
+
+.site-bg__net-line--faint {
+  stroke: rgba(180, 130, 245, 0.04);
+}
+
+.site-bg__pulse {
+  fill: var(--accent-strong);
+  filter: drop-shadow(0 0 6px rgba(194, 102, 240, 0.9));
+  opacity: 0.7;
+}
+
+/* ---- Layer 3 — particles ------------------------------------------------- */
+.site-bg__particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Reduced motion --------------------------------------------------------
+   ambient.js already skips the canvas, parallax and pulse animation; this
+   also freezes any SMIL that a browser started before the script ran. */
+@media (prefers-reduced-motion: reduce) {
+  .site-bg__particles {
+    display: none;
+  }
+  .site-bg__pulse {
+    display: none;
+  }
+}

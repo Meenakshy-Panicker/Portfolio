@@ -16,9 +16,66 @@
   <link rel="stylesheet" href="css/sections.css" />
   <link rel="stylesheet" href="css/experience-timeline.css" />
   <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/ambient.css" />
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ============================== Ambient background ============================== -->
+  <div class="site-bg" aria-hidden="true">
+    <!-- Layer 1 — static atmospheric wash -->
+    <div class="site-bg__atmosphere"></div>
+
+    <!-- Layers 2 & 4 — static network + travelling glow points -->
+    <svg class="site-bg__network" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"
+         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <path id="ambient-p1" d="M -60 210 C 220 150 360 330 560 300 S 940 170 1180 280 S 1520 240 1560 320" />
+        <path id="ambient-p2" d="M -60 640 C 240 590 430 740 660 690 S 1010 560 1260 650 S 1520 610 1560 680" />
+        <path id="ambient-p3" d="M 250 -40 C 300 210 210 380 350 540 S 500 780 440 960" />
+        <path id="ambient-p4" d="M 1170 -40 C 1110 230 1250 410 1170 610 S 1060 830 1150 960" />
+        <path id="ambient-b1" d="M 560 300 C 680 320 740 440 920 470 S 1150 520 1220 470" />
+        <path id="ambient-b2" d="M 660 690 C 720 570 640 470 560 300" />
+      </defs>
+
+      <!-- faint contour arcs -->
+      <path class="site-bg__net-line site-bg__net-line--faint" d="M -100 900 C 300 500 600 780 900 480 S 1300 250 1560 420" />
+      <path class="site-bg__net-line site-bg__net-line--faint" d="M -100 40 C 400 260 700 60 1000 280 S 1400 500 1560 360" />
+
+      <!-- river / network lines -->
+      <use class="site-bg__net-line" xlink:href="#ambient-p1" />
+      <use class="site-bg__net-line" xlink:href="#ambient-p2" />
+      <use class="site-bg__net-line" xlink:href="#ambient-p3" />
+      <use class="site-bg__net-line" xlink:href="#ambient-p4" />
+      <use class="site-bg__net-line site-bg__net-line--faint" xlink:href="#ambient-b1" />
+      <use class="site-bg__net-line site-bg__net-line--faint" xlink:href="#ambient-b2" />
+
+      <!-- Layer 4 — glowing points travelling along the network -->
+      <circle class="site-bg__pulse" r="2.4">
+        <animateMotion dur="19s" repeatCount="indefinite" rotate="auto">
+          <mpath xlink:href="#ambient-p1" />
+        </animateMotion>
+      </circle>
+      <circle class="site-bg__pulse" r="2">
+        <animateMotion dur="27s" begin="-8s" repeatCount="indefinite">
+          <mpath xlink:href="#ambient-p2" />
+        </animateMotion>
+      </circle>
+      <circle class="site-bg__pulse" r="1.8">
+        <animateMotion dur="23s" begin="-14s" repeatCount="indefinite">
+          <mpath xlink:href="#ambient-p3" />
+        </animateMotion>
+      </circle>
+      <circle class="site-bg__pulse" r="1.8">
+        <animateMotion dur="16s" begin="-5s" repeatCount="indefinite">
+          <mpath xlink:href="#ambient-b1" />
+        </animateMotion>
+      </circle>
+    </svg>
+
+    <!-- Layer 3 — drifting particles -->
+    <canvas class="site-bg__particles" id="ambientParticles"></canvas>
+  </div>
 
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
   <canvas class="cursor-comet" id="cursorComet" aria-hidden="true"></canvas>
@@ -989,6 +1046,7 @@
   </dialog>
 
   <script src="js/placeholder.js" defer></script>
+  <script src="js/ambient.js" defer></script>
   <script src="js/nav.js" defer></script>
   <script src="js/cursor.js" defer></script>
   <script src="js/particles.js" defer></script>
